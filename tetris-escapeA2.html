@@ -1,0 +1,707 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+
+<title>Escape Tetris 2.3 FINAL</title>
+
+<style>
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+margin:0;
+padding:0;
+height:100%;
+background:#050505;
+overflow:hidden;
+touch-action:none;
+font-family:monospace;
+}
+
+body{
+display:flex;
+justify-content:center;
+align-items:center;
+color:#00ff88;
+}
+
+#wrap{
+text-align:center;
+padding:10px;
+width:100%;
+max-width:430px;
+}
+
+h1{
+margin:0 0 10px;
+letter-spacing:3px;
+text-shadow:0 0 12px #00ff88;
+}
+
+#game{
+position:relative;
+display:inline-block;
+}
+
+canvas{
+display:block;
+background:#111;
+border:4px solid #00ff88;
+box-shadow:0 0 20px #00ff88;
+image-rendering:pixelated;
+touch-action:none;
+user-select:none;
+-webkit-user-select:none;
+-webkit-touch-callout:none;
+}
+
+#game::after{
+content:"";
+position:absolute;
+inset:0;
+pointer-events:none;
+background:
+repeating-linear-gradient(
+transparent 0px,
+transparent 3px,
+rgba(255,255,255,.04) 4px
+);
+}
+
+#start,#overlay{
+position:absolute;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+
+#start{
+background:rgba(0,0,0,.88);
+}
+
+#overlay{
+font-size:96px;
+font-weight:bold;
+color:gold;
+opacity:0;
+pointer-events:none;
+}
+
+#overlay.show{
+animation:reveal 2s;
+}
+
+@keyframes reveal{
+0%{
+opacity:0;
+transform:scale(.5);
+}
+20%{
+opacity:1;
+transform:scale(1.2);
+text-shadow:-4px 0 red,4px 0 cyan,0 0 25px gold;
+}
+100%{
+opacity:0;
+}
+}
+
+.glitch{
+animation:shake .35s;
+}
+
+@keyframes shake{
+25%{transform:translate(-4px,2px);}
+75%{transform:translate(4px,-2px);}
+}
+
+#buttons{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+}
+
+button{
+background:#111;
+color:#00ff88;
+border:2px solid #00ff88;
+padding:10px 16px;
+font-family:inherit;
+font-size:16px;
+cursor:pointer;
+}
+
+button:active{
+background:#00ff88;
+color:#000;
+}
+
+#touch{
+display:flex;
+justify-content:center;
+gap:12px;
+margin-top:15px;
+}
+
+.touch{
+width:76px;
+height:76px;
+border-radius:16px;
+border:3px solid #00ff88;
+background:#111;
+color:#00ff88;
+font-size:30px;
+font-weight:bold;
+touch-action:none;
+}
+
+.touch:active{
+background:#00ff88;
+color:black;
+transform:scale(.95);
+}
+
+small{
+color:#888;
+}
+
+@media (hover:hover) and (pointer:fine){
+#touch{
+display:none;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div id="wrap">
+
+<h1>ESCAPE TETRIS</h1>
+
+<div id="game">
+
+<canvas id="c" width="240" height="480"></canvas>
+
+<div id="overlay">67</div>
+
+<div id="start">
+
+<div style="font-size:22px">INSERT TOKEN</div>
+
+<button id="startBtn" style="margin-top:18px">
+START
+</button>
+
+</div>
+
+</div>
+
+<div style="margin-top:10px">
+
+ZEILEN: <span id="lines">0</span>
+
+</div>
+
+<div id="msg"
+style="height:22px;color:gold"></div>
+
+<div id="buttons">
+
+<button id="newGame">NEUES SPIEL</button>
+
+<button id="back">ZURÜCK</button>
+
+</div>
+
+<div id="touch">
+
+<button class="touch" id="left">⬅</button>
+
+<button class="touch" id="rotate">⟳</button>
+
+<button class="touch" id="right">➡</button>
+
+<button class="touch" id="down">⬇</button>
+
+</div>
+
+<p><small>
+PC: Pfeiltasten · Handy: Touch-Tasten
+</small></p>
+
+</div>
+
+<script>
+
+const canvas=document.getElementById("c");
+const ctx=canvas.getContext("2d");
+
+const SIZE=24;
+const W=10;
+const H=20;
+
+const COLORS=[
+"",
+"#F1C40F",
+"#9B59B6",
+"#00D2FF",
+"#E74C3C",
+"#2ECC71",
+"#3498DB"
+];
+
+const SHAPES=[
+[[1,1],[1,1]],
+[[2,2,2],[0,2,0]],
+[[3,3,3,3]],
+[[4,4,0],[0,4,4]],
+[[0,5,5],[5,5,0]],
+[[6,0,0],[6,6,6]]
+];
+
+let board=[];
+let piece;
+let px=0;
+let py=0;
+
+let timer=null;
+
+let started=false;
+let paused=false;
+
+let lines=0;
+let unlocked=false;
+
+function clone(m){
+return JSON.parse(JSON.stringify(m));
+}
+
+function startGame(){
+
+clearInterval(timer);
+
+board=Array.from(
+{length:H},
+()=>Array(W).fill(0)
+);
+
+lines=0;
+unlocked=false;
+started=true;
+paused=false;
+
+document.getElementById("lines").textContent="0";
+document.getElementById("msg").textContent="";
+document.getElementById("start").style.display="none";
+
+spawn();
+draw();
+
+timer=setInterval(step,500);
+
+}
+
+function backToStart(){
+
+clearInterval(timer);
+
+started=false;
+paused=false;
+
+const s=document.getElementById("start");
+
+s.style.display="flex";
+
+s.innerHTML=
+"<div style='font-size:22px'>INSERT TOKEN</div><button id='startBtn' style='margin-top:18px'>START</button>";
+
+document.getElementById("startBtn").onclick=startGame;
+
+ctx.fillStyle="#111";
+ctx.fillRect(0,0,240,480);
+
+}
+
+function spawn(){
+
+piece=clone(
+SHAPES[
+Math.floor(Math.random()*SHAPES.length)
+]
+);
+
+px=((W-piece[0].length)/2)|0;
+py=0;
+
+if(hit()) gameOver();
+
+}
+
+function gameOver(){
+
+clearInterval(timer);
+
+started=false;
+
+const s=document.getElementById("start");
+
+s.style.display="flex";
+
+s.innerHTML=
+"<div style='font-size:22px'>GAME OVER</div><button id='startBtn' style='margin-top:18px'>NOCHMAL</button>";
+
+document.getElementById("startBtn").onclick=startGame;
+
+}
+
+function hit(nx=px,ny=py,np=piece){
+
+for(let y=0;y<np.length;y++)
+for(let x=0;x<np[y].length;x++){
+
+if(!np[y][x]) continue;
+
+const gx=nx+x;
+const gy=ny+y;
+
+if(gx<0||gx>=W||gy>=H)
+return true;
+
+if(gy>=0&&board[gy][gx])
+return true;
+
+}
+
+return false;
+
+}
+
+function merge(){
+
+for(let y=0;y<piece.length;y++)
+for(let x=0;x<piece[y].length;x++)
+if(piece[y][x])
+board[py+y][px+x]=piece[y][x];
+
+}
+
+function clearRows(){
+
+let removed=0;
+
+for(let y=H-1;y>=0;y--){
+
+if(board[y].every(Boolean)){
+
+board.splice(y,1);
+board.unshift(Array(W).fill(0));
+
+removed++;
+y++;
+
+}
+
+}
+
+if(removed){
+
+lines+=removed;
+
+document.getElementById("lines").textContent=lines;
+
+if(lines>=3&&!unlocked){
+
+unlocked=true;
+secret();
+
+}
+
+}
+
+}
+
+function secret(){
+
+paused=true;
+
+document.getElementById("game").classList.add("glitch");
+document.getElementById("overlay").classList.add("show");
+
+document.getElementById("msg").textContent="SYSTEM ERROR";
+
+setTimeout(()=>{
+document.getElementById("msg").textContent="CODEFRAGMENT GEFUNDEN";
+},900);
+
+setTimeout(()=>{
+
+document.getElementById("game").classList.remove("glitch");
+document.getElementById("overlay").classList.remove("show");
+document.getElementById("msg").textContent="";
+
+paused=false;
+
+},2200);
+
+}
+
+/* ---------- ROTATION MIT WALL KICK ---------- */
+
+function rotate(){
+
+const h=piece.length;
+const w=piece[0].length;
+
+const rotated=
+Array.from(
+{length:w},
+()=>Array(h).fill(0)
+);
+
+for(let y=0;y<h;y++)
+for(let x=0;x<w;x++)
+rotated[x][h-1-y]=piece[y][x];
+
+const tests=[
+[0,0],
+[-1,0],
+[1,0],
+[-2,0],
+[2,0],
+[0,-1]
+];
+
+for(const [dx,dy] of tests){
+
+if(!hit(px+dx,py+dy,rotated)){
+
+piece=rotated;
+px+=dx;
+py+=dy;
+
+draw();
+return;
+
+}
+
+}
+
+}
+
+/* ---------- ENDE ROTATION ---------- */
+
+function moveLeft(){
+
+if(started&&!paused&&!hit(px-1,py)){
+px--;
+draw();
+}
+
+}
+
+function moveRight(){
+
+if(started&&!paused&&!hit(px+1,py)){
+px++;
+draw();
+}
+
+}
+
+function moveDown(){
+
+if(started&&!paused){
+
+py++;
+
+if(hit())
+py--;
+
+draw();
+
+}
+
+}
+function step(){
+
+if(!started || paused) return;
+
+py++;
+
+if(hit()){
+
+py--;
+
+merge();
+
+clearRows();
+
+spawn();
+
+}
+
+draw();
+
+}
+
+function cell(x,y,v){
+
+ctx.fillStyle=COLORS[v];
+
+ctx.fillRect(
+x*SIZE,
+y*SIZE,
+SIZE,
+SIZE
+);
+
+ctx.strokeStyle="#222";
+
+ctx.strokeRect(
+x*SIZE,
+y*SIZE,
+SIZE,
+SIZE
+);
+
+}
+
+function draw(){
+
+ctx.fillStyle="#111";
+
+ctx.fillRect(
+0,
+0,
+240,
+480
+);
+
+for(let y=0;y<H;y++)
+for(let x=0;x<W;x++)
+if(board[y][x])
+cell(x,y,board[y][x]);
+
+if(piece)
+for(let y=0;y<piece.length;y++)
+for(let x=0;x<piece[y].length;x++)
+if(piece[y][x])
+cell(px+x,py+y,piece[y][x]);
+
+}
+
+/* ---------------- PC ---------------- */
+
+document.addEventListener("keydown",e=>{
+
+if(e.key==="Enter"&&!started){
+
+startGame();
+
+return;
+
+}
+
+if(!started||paused) return;
+
+switch(e.key){
+
+case"ArrowLeft":
+moveLeft();
+break;
+
+case"ArrowRight":
+moveRight();
+break;
+
+case"ArrowUp":
+rotate();
+break;
+
+case"ArrowDown":
+moveDown();
+break;
+
+}
+
+});
+
+/* ---------- Safari Canvas Schutz ---------- */
+
+["touchstart","touchmove"].forEach(type=>{
+
+canvas.addEventListener(type,function(e){
+
+e.preventDefault();
+
+},{passive:false});
+
+});
+
+/* ---------- Pointer Events (Android + iPhone) ---------- */
+
+function bind(id,fn){
+
+const el=document.getElementById(id);
+
+/* Moderne Geräte */
+
+if(window.PointerEvent){
+
+el.addEventListener("pointerup",function(e){
+
+e.preventDefault();
+fn();
+
+});
+
+}
+
+/* Fallback für ältere iPhones */
+
+else{
+
+el.addEventListener("touchend",function(e){
+
+e.preventDefault();
+fn();
+
+},{passive:false});
+
+el.addEventListener("click",fn);
+
+}
+
+}
+
+/* Touch-Steuerung */
+
+bind("left",moveLeft);
+bind("right",moveRight);
+bind("rotate",rotate);
+bind("down",moveDown);
+
+/* Buttons */
+
+document.getElementById("startBtn").onclick=startGame;
+document.getElementById("newGame").onclick=startGame;
+document.getElementById("back").onclick=backToStart;
+
+/* Erstes Bild zeichnen */
+
+draw();
+
+</script>
+
+</body>
+</html>
