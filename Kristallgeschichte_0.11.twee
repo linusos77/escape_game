@@ -1,0 +1,336 @@
+:: StoryTitle
+Kristallgeschichte
+
+
+:: StoryData
+{
+  "ifid": "B91A2282-0A00-41F7-9A0E-FB01709ECBDD",
+  "format": "Harlowe",
+  "format-version": "3.3.9",
+  "start": "Start - 3 Türen",
+  "zoom": 1
+}
+
+
+:: \ Abgrund {"position":"800,500","size":"100,100"}
+... und verfehle die Kante. Ich stürze ab, pralle auf und alles wird schwarz.
+
+[[Das versuchen wir nochmals! ||Start - 3 Türen]] 
+
+
+:: \ Ausgang langsam {"position":"1025,1025","size":"100,100"}
+Du gleitest in Richtung dem hellen Umriss der Türe, den du nach wie vor erkennen kannst. Du kommst näher und näher - gleich bist du [[draussen! | Ausgang langsam 2]]
+
+
+
+:: \ Ausgang langsam 2 {"position":"900,1175","size":"100,100"}
+Aber hier sind die Winde so stark! Bevor du die Türe erreichst, wirst du nach unten gezogen, wie sehr du auch danach strebst, dein Segel richtig auszurichten. Das Licht fällt über dir weg.
+
+[[Ohje| Luft Central]] 
+
+
+:: \ Luft 2 {"position":"1000,650","size":"100,100"}
+Du siehst die Türe in die Distanz verschwinden, als du nach oben gezogen wirst. Du bist ein Spielball der Lüfte, hast kaum Kontrolle über deinen Weg. Und doch scheinst du auf etwas zugezogen zu werden, auf ein Licht, das weiter oben glänzt. Kurz wirst du gegen eine Wand geworfen, zum Glück ist sie samtig und weich!
+
+Was tust du?
+
+[[Ich vertraue den Lüften und lasse mich auf das Licht zutragen | Luft 3]]
+[[Ich versuche mich an der weichen Wand festzukrallen | Luft 4]] 
+
+
+:: \ Luft 3 {"position":"750,725","size":"100,100"}
+Der Wind trägt dich weiter, hoch und höher, auf das Licht zu. Du bist dir sicher, dass du richtig gehandelt hast, hier kommst du zum Ziel! Liegt vor dir ein Fenster, ein leuchtender Kristall? Das Glänzen vor dir weitet sich und .... 
+
+[[hindurch | Luft 3.1]] 
+
+
+:: \ Luft 3.1 {"position":"650,925","size":"100,100"}
+... entpuppt sich als eine einsame Laterne die hier, mitten im Nichts, aufgehängt zu sein scheint. Du fliegst an ihr vorbei und fällst, fällst mit dem Wind.
+
+[[Ohje, wohin denn jetzt | Luft Central]] 
+
+
+:: \ Luft 4 {"position":"1200,700","size":"100,100"}
+Du krallst dich im weichen Stoff der Wand fest - und der Stoff löst sich! Schnell wirst du wieder weggewirbelt. Aber du merkst bald, dass der Stoff nützlich ist: Du kannst ihn wie eine Art Segel benutzen, und deinen Flug zumindest ein bisschen steuern.
+
+(if: $Wasser is true)[Uh, das wäre auch praktisch hinter der Wassertüre! Vielleicht kann ich nun dorthin zurück!]
+
+ (set: $Segel to true)
+[[Jetzt können wir was machen! | Luft Central]] 
+
+
+
+:: \ Luft Ausgang schnell {"position":"1275,1150","size":"100,100"}
+Du holst weit aus, lässt dich von den Lüften tragen und gleitest, gleitest immer schneller. Du hast gut gezielt - etwas oberhalb der hellen Türöffnung und nun drückt dich der Wind rasant hinunter.
+
+[[Das wird knapp... | Luft Ausgang schnell 2]]
+
+
+:: \ Luft Ausgang schnell 2 {"position":"1275,1275","size":"100,100"}
+[[sehr knapp ... | Luft Ausgang schnell 3]]
+
+
+:: \ Luft Ausgang schnell 3 {"position":"1275,1400","size":"100,100"}
+[[SEHR KNAPP... | Luft Ausgang schnell 4]]
+
+
+:: \ Luft Ausgang schnell 4 {"position":"1075,1425","size":"100,100"}
+... und es reicht! Du schiesst durch die noch offene Türe.
+
+[[Puh! |Start - 3 Türen]]
+
+
+:: \ Luft Central {"position":"950,750","size":"100,100"}
+Du wirst vom Wind hin und hergeworfen, ohne dass du irgendwo Bestimmtes hinkommst.
+
+(if: $Segel)[ [[... wenn ich nicht ein Segel hätte!|Segelnd]]]
+
+[[Mühsam! | Luft Central 2]] 
+
+
+:: \ Luft Central 2 {"position":"775,1100","size":"100,100"}
+Bald wirst du wieder nach oben gezogen, auf das Licht zu, das weiter oben glänzt. Du wirst erneut gegen die Wand geworfen, zum Glück ist sie samtig und weich!
+
+Was tust du?
+
+[[Ich vertraue den Lüften und lasse mich auf das Licht zutragen | Luft 3]]
+[[Ich versuche mich an der weichen Wand festzukrallen | Luft 4]] 
+
+
+:: \ Luft Exploration {"position":"1400,1150","size":"100,100"}
+Du gleitest durch die Luft. Mit der Zeit wird das ganz machbar, du kannst dir die Winde beinahe gefügig machen. Du fliegst weit in den Raum hinein, erkundest all seine Winkel. Du findest Lichter, Laternen, die im nichts schweben. Du findest weitere Wände, die ebenfalls von den samtigen Stofflappen bedeckt sind. 
+
+[[Zeit vergeht| Luft Exploration 2]]
+
+
+:: \ Luft Exploration 2 {"position":"1400,1275","size":"100,100"}
+Weiter und weiter gleitest du. Hier muss es doch etwas interessantes geben! Die Winde tragen dich zu weiteren Laternen, doch bei keiner findet sich mehr - kein Leben, kein Durchgang, nichts.
+
+Du bist in einem gigantischen Raum, voll Luft, voll nichts.
+
+[[Vielleicht muss ich alles nochmals von vorne machen! | Luft Startover]] 
+[[Ich muss hier raus!| Luft Ausgang schnell]]
+
+
+:: \ Luft Startover {"position":"1625,1025","size":"100,100"}
+Du lässt dein Segel los und lässt dich wieder treiben.
+(set: $Segel to false)
+
+[[...| Luft Central]] 
+
+
+:: \ Segeln-Wasser {"position":"675,150","size":"100,100"}
+Du gleitest über den Abgrund und kommst auf der gegenüberliegenden Seite auf - gerade noch! Du spürst, wie das Segel den Strapazen, denen du es ausgesetzt hast, nicht mehr stand halten kann und zu reissen beginnt. Dein Aufprall ist härter als gedacht und in den Händen hältst du nur noch Stofffetzen. Hoffentlich brauchst du nun kein Segel mehr!
+
+(set: $Segel to false)
+
+[[Weiter geht's!| Wasserfall]] 
+
+
+:: \ Wasserfall {"position":"700,375","size":"100,100"}
+Wasser rauscht und dir spritzt kühle Gischt entgegen. Hinter dem Abgrund stürzt ein Wasserfall in ein tiefes Tal. Offenbar bist du nun draussen und nicht mehr im Innern des Berges. Diese Türen sind eindeutig magisch!
+
+[[Ich schaue mich um - vielleicht kann ich irgendwie hochklettern | Wasserfall hoch]]
+[[Nun wäre das Segel doch noch nützlich. Egal. Ich vertraue meinem guten Stern - und der tiefe des Wassers unten im Tal - und stürze mich den Wasserfall hinunter |Wasserfall tief]]
+
+
+
+
+:: \ Wasserfall hoch {"position":"500,375","size":"100,100"}
+Du erkennst tatsächlich einen schmalen Sims, der an der Felswand entlang hinter den Wasserfall zu führen scheint. Du musst aufpassen, es ist glitschig - aber vielleicht kannst du ihn entlangklettern. Du nimmst deinen Mut zusammen, und....
+
+[[... nimmst den Sims mit Anlauf in Angriff. Je weniger Schritte du auf dem glitschigen Stein machen musst, desto besser! |Sims - schnell]]
+[[... schmiegst dich an die Felswand und schleichst auf Zehenspitzen voran |Sims - langsam]]
+
+
+:: \ Überblick {"position":"1275,1025","size":"100,100"}
+Nun siehst du zum ersten Mal die Dimensionen des Raums, in dem du hier bist. Er ist gewaltig, erstreckt sich in alle Richtungen. Die Wand bei der Türe ist die einzige, die halbwegs nah erscheint. Ein Glück, dass du in sie reingedrückt wurdest und dein Segel ergriffen hast! Der samtige Stoff bedeckt die Wand in grossen Lappen, ein seltsamer Anblick.
+
+Du spielst ein bisschen mit deinem Flug und erkennst Muster in den Windströmungen. Beim Eingang fällt die Luft ganz stark ab - hier müsste man mit viel Schwung durch!
+
+[[Nur weg hier! | Luft Ausgang schnell]]
+[[Wie toll! Nun kann ich diesen Raum auskundschaften | Luft Exploration]]
+
+
+:: Fluss - Überblick {"position":"425,775","size":"100,100"}
+Ein Fluss fliesst vom Wasserfall weg durch ein grünes Tal. Wahrscheinlich solltest du ihm folgen - du bist ja schliesslich durch die Wasser-Tür gegangen!
+
+Zum Glück erkennst du nicht weit weg ein kleines Ruderboot, das am Ufer vertäut ist.
+
+[[Fahren wir den Fluss hinunter!|Flussfahrt]]
+
+
+
+:: Flussfahrt {"position":"425,900","size":"100,100"}
+Das Boot trägt dich den Fluss hinunter. Erst bist du etwas unsicher mit den Rudern, aber du lernst schnell und bald schon fühlst du dich mit der Strömung, den Stromschnellen und den Windungen des Flusses im Einklang. Es ist fast hypnotisch, wie du entlanggleitest, vorbei an Klippen und Hügeln, Wiesen und Wäldern. Menschen siehst du keine, nur ein paar Tiere, Vögel und Fische.
+
+Der Fluss wird merklich breiter und mächtiger und dann siehst du es [[...|Meer]]
+
+
+
+:: Höhle {"position":"125,750","size":"100,100"}
+Vor dir liegt eine weite Höhle, erhellt vom flackernden Licht einiger Fackeln. Mehrere Wasserfälle ergiessen sich den Wänden entlang hinunter und in einen Teich. Im Teich steht eine Plattform und auf dieser Plattform thront ein Wesen, das du nur aus Mythen kennst - eine Sphinx!
+
+[[Tritt näher|Sphinx]] 
+
+
+:: Meer {"position":"425,1025","size":"100,100"}
+... das Meer! Weit liegt es vor dir, unermesslich. Die Sonne geht gerade unter und legt einen orangenen Schimmer auf die blaue Fläche. Du spürst es genau - auf dieses Gewässer hinaus must du segeln! Und ja, du wirst segeln müssen. Dein Ruderboot hat gute Dienste geleistet, aber seetauglich ist es nicht.
+
+Wie gut, dass bei der Mündung des Flusses ein [[Segelboot liegt.|Segelboot]]
+
+
+:: Rätsel {"position":"425,1400","size":"100,100"}
+Mein Name ist Merophon.  Ich machte insgesamt sieben gefährliche Reisen, die mich in verschiedene Länder führten. Auf jeder Reise erwarb ich einen berühmten Schatz, denciher einem gefährlichen Gegner abnahm.
+
+Sage mir, in welcher Reihenfolge ich die Länder besuchte! 
+
+(Hinweis beim Testen: das Rätsel unten basiert auf einem Rätsel aus dem Internet, siehe Hinweis ganz unten. Es wurde vereinfacht, im Original müssen auch Gegner und Gegenstand ermittelt werden.)
+
+Ich besuchte das Land Zonobra auf einer früheren Reise als der, auf der ich die Zaubererin Briane besiegte. Ich begegnete Briane, die berühmt dafür war, ihre Gegner in Erdwürmer zu verwandeln, auf einer früheren Reise als der, auf der ich den Daqar-Diamanten erwarb.
+
+Ich begegnete dem Dieb Thomas nicht auf seiner Reise nach Boz und auch nicht auf seiner Reise nach Gosha.
+
+Ich erwarb den Smaragd des Emir nicht von Königin Norene.
+
+Weder Sultan Mohamad noch der Händler Hussad waren meine Gegner, als cih die Lampe des Geistes in meinen Besitz brachte.
+
+Ich überlistete den Großwesir Ahmad auf der Reise unmittelbar nach der, die mich nach Amabala führte und unmittelbar bevor der, die mir den Smaragd des Emirs einbrachte.
+
+Der Rubin des Roten Meeres wurde weder in Shalala noch in Xunuda erworben.
+
+Unmittelbar, nachdem ich den Dieb Thomas ausgetrickst hatte, erwarb ich den Saphir von Suez.
+
+Ich erwarb den Rubin des Roten Meeres auf einer Reise, die später stattfand als die, auf der ich die Hohepriesterin Zerene bekämpfte; diese wiederum fand später statt als die Reise nach Lahoia.
+
+Mein Abenteuer in Boz fand unmittelbar nach der Reise statt, die mich ins Land von Königin Norene führte
+
+Die Begegnung mit der Zaubererin Briane war nicht im sagenhaften Land Xunuda.
+
+Auf meiner siebenten und letzten Reise entführte ich den Prinzen Pergamon, der später mein Mann wurde. Meine ersten Reise führte mich nach Gosha.
+
+Sultan Mohamad war nicht der Feind, dem ich die Schwarzen Perlen der Punjab abnahm.
+
+Der Saphir von Suez ist nicht der Schatz, den ich dem Großwesir Ahmad entwendete.
+
+[[Amabala, Boz, Gosha, Lahoia, Shalala, Xunuda, Zonobra|richtig]]
+[[Boz, Gosha, Zonobra, Xunuda, Shalala, Lahoia, Amabala|falsch]]
+[[Amabala, Boz, Xunuda, Zonobra, Gosha, Lahoia, Shalala|falsch]]
+[[Zonobra, Boz, Gosha, Shalala, Amabala, Xunuda, Lahoia|falsch]]
+[[Amabala, Xunuda, Zonobra, Gosha, Lahoia, Shalala, Boz|falsch]]
+
+Dieses Rätsel stammt ursprünglich von Otto Janko und ist verfügbar unter https://www.janko.at/Raetsel/
+
+
+:: Segelboot {"position":"425,1150","size":"100,100"}
+Du segelst auf das Meer hinaus, weiter und weiter, bis du zu einer Insel gelangst. Auf der Insel steht ein Turm, und auf dem Turm sitzt eine [[Sphinx]].
+
+
+:: Segelnd {"position":"1250,900","size":"100,100"}
+Nun, da du etwas Kontrolle hast, kannst du deinen Flug steuern! 
+
+[[Ich rase direkt dem Ausgang zu | Ausgang langsam]] 
+[[Ich hole weit aus und schaue, was es hier zu sehen gibt | Überblick]] 
+
+
+
+:: Sims - langsam {"position":"375,300","size":"100,100"}
+Schritt für Schritt tastest du dich voran. Bald bist du völlig durchnässt. Einmal gleitet dein Fuss ab, doch du fängst dich, schwer atmend an die Wand gepresst. 
+
+Langsam und stetig balancierst du weiter. Und dann - tatsächlich! Ein breiterer Absatz und dahinter eine Öffnung, eine Höhle!
+
+[[Ich gehe hinein|Höhle]]
+
+
+
+:: Sims - schnell {"position":"375,475","size":"100,100"}
+Ein Satz, schon bist du mitten auf dem schmalen Sims. Du nutzt dein Momentum, ein weiterer Satz und Wasser spritzt um dich herum auf. Du siehst das Ende des Vorsprungs, ein Loch, eine Höhle und springst weiter und ... du gleitest ab. Du versuchst dich zu halten, aber es gelingt nicht, und du stürzt mit den Wassermassen ins Tal.
+
+[[Ahhhhhhhhhhhh! |Wasserfall tief]]
+
+
+
+:: Sphinx {"position":"425,1275","size":"100,100"}
+Die Sphinx schaut auf dich herab. Ihre grauen Augen stechen unter der Löwenmäne heraus, als ihre Stimme grollt:
+
+"Löse mein Rätsel und du siehe, wo dein Weg dich hinführt. Löse mein Rätsel und du hast einen Schritt in der Games-Challenge getan!"
+
+Löse das [[Rätsel]].
+
+
+:: Start - 3 Türen {"position":"975,400","size":"100,100"}
+Die Stimme ist verklungen, Stille herrscht. Vor dir türmt sich der Hang des Gebirges auf, höher und höher bis zu den Wolken. Vor dir sind drei Türen, geschlossen, mit einem Symbol eingeritzt. Feuer auf der ersten Tür, Luft auf der zweiten, Wasser auf der dritten. Durch welche Türe trittst du?
+
+(set: $Antworten = 0)
+
+[[Feuer klingt nach Spass |Türe 1 - Feuer]] 
+[[Die Luft wird mich nach oben führen |Türe 2 - Luft]] 
+[[Ich werde fliessen wie Wasser |Türe 3 - Wasser]] 
+
+
+
+
+:: Türe 1 - Feuer {"position":"1125,525","size":"100,100"}
+Ein dunkler Raum liegt vor dir. Nur ein ganz kleines Licht, wie die Flamme einer kleinen Kerze, glimmt weiter drin. Du trittst vor und hinter dir fällt die Türe ins Schloss.
+
+Flammen schiessen von dem kleinen Licht empor und innert Sekunden bist du in Hitze eingehüllt. Dein Abenteuer endet hier.
+
+[[Versuche es erneut |Start - 3 Türen]] 
+
+
+:: Türe 2 - Luft {"position":"900,550","size":"100,100"}
+Was sich wie die Hand eines Riesen anfühlt, der dich durch die Türe drückt, stellt sich tatsächlich als ein unheimlich starker Wind heraus. Vor dir fällt der Boden in die Leere, über dir ist keine Decke zu erkennen. Zum Glück fängt dich der Wind, bevor du ins Bodenlose stürzt. 
+
+(set: $Segel to false)
+
+[[Der Wind wirft dich umher | Luft 2]] 
+
+
+:: Türe 3 - Wasser {"position":"850,300","size":"100,100"}
+Vor dir tut sich ein Abgrund auf. Die gegenüberliegende Seite ist etwas tiefer und du schaust dich um. Es hat etwas Platz um Anlauf zu nehmen aber dennoch - das hier ist zu breit um rüberzuspringen, und keine Brücke weit und breit in Sicht. 
+
+Du siehst allerdings einen Stein in den runenartige Buchstaben geritzt sind. Es braucht einen Moment, aber du entzifferst:
+
+"Die voreilige Reisende wird stets ausgebremst. Nur wer die Nase in manche Luft gereckt hat, segelt erst über Abgründe und dann auf den wilden Wassern."
+
+ (set: $Wasser to true)
+ 
+ [[Ich versuche es trotzdem. Genügend Anlauf, ein richtiger Satz! Ich fliege durch die Luft... | Abgrund]]
+ [[Hmm, vielleicht muss ich noch etwas in einer der anderen Türen holen, um hier weiter zu kommen! |Start - 3 Türen]] 
+ (if: $Segel is true)[[[Wer hätte es gedacht: Das Segel aus der Lufttüre wird nochmals nützlich! | Segeln-Wasser]]]
+ 
+
+
+:: Wasserfall tief {"position":"425,650","size":"100,100"}
+Während des fallens spannst du deinen Körper an, streckst ihn durch und du schaffst es, mit den Füssen zuerst in das eiskalte Wasser am Fuss des Wasserfalls zu klatschen. Deine Fusssohlen brennen und die Kälte raubt dir schier die Sinne, aber nach einigen kräftigen Schwimmzügen durchbrichst du die Wasseroberfläche. Tief ziehst du die Luft ein und schwimmst zum Ufer.
+
+[[Erst mal einen Überblick verschaffen!|Fluss - Überblick]]
+
+
+
+:: falsch {"position":"550,1525","size":"100,100"}
+(set: $Antworten to $Antworten + 1)
+
+(if: $Antworten is 1)[
+    "Du scheinst keinen blauen Schimmer von meinen Reisen zu haben! Zwei Chancen hast du noch..."
+    [[Versuche es nochmals|Rätsel]]
+]
+
+(if: $Antworten is 2)[
+    "Du rätst doch einfach! Eine Antwort hast du noch und sonst..."
+    [[Ohje, nun zählt's!|Rätsel]]
+]
+
+(if: $Antworten >= 3)[
+    "Du hast deine Chance vertan und bist nicht würdig, weiterzugehen." Die Sphinx wirbelt mit ihren Schwingen Luft und Wasser auf. Dir wird schwummrig, du versuchst dich zu halten und wirst trotzdem hochgewirbelt und landest ... dort, wo du begonnen hast.
+    [[Mist|Start - 3 Türen]] 
+]
+
+
+:: richtig {"position":"425,1525","size":"100,100"}
+"Genau so war es. Ach, die guten alten Zeiten!" Die Sphinx neigt den Kopf zu Seite, breitet ihre Schwingen aus und steigt auf. Hinter ihr siehst du eine Art Altar und darauf ein Buch. Du gehst zum Buch und liest auf den aufgeschlagenen Seiten:
+
+(text-colour:cyan)+(bg:purple)[''24!'']
+
+Danke für's Spielen! Du hast nun einen Teil des Puzzles, um meine Game-Challenge zu bestehen!
+                  
